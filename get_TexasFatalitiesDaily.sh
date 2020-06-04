@@ -1,0 +1,1 @@
+wget https://www.dshs.state.tx.us/coronavirus/TexasCOVID19DailyCountyFatalityCountData.xlsx -O DataRepo/RawDownloads/TexasCOVID19DailyCountyFatalityCountData_$(date +%Y-%m-%d).xlsx --no-check-certificate

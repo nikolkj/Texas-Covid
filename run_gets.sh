@@ -1,0 +1,3 @@
+sh get_TexasCasesDaily.sh
+sh get_TexasFatalitiesDaily.sh
+sh get_TexasTestsCummulative.sh
