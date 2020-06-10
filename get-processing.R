@@ -1,7 +1,17 @@
+#!/usr/bin/Rscript
+
+# NOTE: Make sure that personal library mapped to R_LIBS_SITE variable in "/usr/lib/R/etc/Renviron" config file
+# ... this case, /home/niko/R/x86_64-pc-linux-gnu-library/3.6
+# ... see https://knausb.github.io/2017/07/r-3.4.1-personal-library-location/ for more details
+# ... otherwise cron will fail to load non-otb packages 
+
 rm(list = ls());
+setwd("/home/niko/Documents/R-projects/TexasCovid") # must be explicityly set for cron task execution
+
 require(tidyverse)
 # require(magrittr)
 # readxl
+
 
 # Summarise Downloads for file-pickup ----
 dir_downloads = "DataRepo/RawDownloads/"
@@ -46,7 +56,6 @@ dat = dat %>%
 
 # Create output copy of daily case counts
 dat_cases = dat 
-
 rm(dat)
 
 # Processing (CountyFatalityCountData) ----
@@ -81,7 +90,6 @@ dat = dat %>%
 
 # Create output copy of daily fatality counts
 dat_fatality = dat 
-
 rm(dat)
 
 # Processing (CummulativeCountyTestVolume) ----
@@ -121,7 +129,6 @@ dat = dat %>%
 
 # Create output copy of daily fatality counts
 dat_tests = dat 
-
 rm(dat)
 
 # Finishing Touches ----
@@ -133,17 +140,19 @@ dat_tests$LastUpdateDate = Sys.Date()
 # ... tbd, compare against last successful export
 
 # Write to File for GitHub Sync ----
+
 # Write daily-copies to file
+# ... Just write to local here
+# ... Commit and push of daily-copies handled by git in primary shell script
+
 write_csv(x = dat_cases, 
-          path = "daily-county-data/Texas-County-Cases.csv", na = "", col_names = TRUE)
+          path = "/home/niko/Documents/R-projects/TexasCovid/daily-county-data/Texas-County-Cases.csv", na = "", col_names = TRUE)
 
 write_csv(x = dat_fatality,
-          path = "daily-county-data/Texas-County-Deaths.csv", na = "", col_names = TRUE)
+          path = "/home/niko/Documents/R-projects/TexasCovid/daily-county-data/Texas-County-Deaths.csv", na = "", col_names = TRUE)
 
 write_csv(x = dat_tests,
-          path = "daily-county-data/Texas-County-Tests.csv", na = "", col_names = TRUE)
-
-# Commit and push daily-copies 
+          path = "/home/niko/Documents/R-projects/TexasCovid/daily-county-data/Texas-County-Tests.csv", na = "", col_names = TRUE)
 
 # Write Data to Database ----
 # ... tbd
