@@ -1,12 +1,3 @@
----
-title: "TexasCovid README"
-author: "Nikolai Priser"
-date: "6/10/2020"
-output:
-      html_document:
-        keep_md: true
----
-
 
 ## Summary 
 Daily publication of cleaned and tidy Texas county-level Covid-19 statistics, as published by Texas DSHS.\
@@ -31,7 +22,6 @@ All data-tables have the following fields:
 DSHS updates data everyday around ~9:30am CST, tidy-data is then updated at 10:30am CST. 
 &nbsp;
 
-----
 ## Getting Data
 
 Read data from github link.
@@ -72,114 +62,113 @@ dat %>%
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> Lamar </td>
-   <td style="text-align:left;"> 2020-06-08 </td>
-   <td style="text-align:right;"> 154 </td>
+   <td style="text-align:left;"> Collin </td>
+   <td style="text-align:left;"> 2020-05-21 </td>
+   <td style="text-align:right;"> 1090 </td>
+   <td style="text-align:right;"> 17 </td>
+   <td style="text-align:left;"> 2020-06-10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Kaufman </td>
+   <td style="text-align:left;"> 2020-05-10 </td>
+   <td style="text-align:right;"> 116 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 2020-06-10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Grayson </td>
+   <td style="text-align:left;"> 2020-06-03 </td>
+   <td style="text-align:right;"> 350 </td>
+   <td style="text-align:right;"> 8 </td>
+   <td style="text-align:left;"> 2020-06-10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Hidalgo </td>
+   <td style="text-align:left;"> 2020-05-07 </td>
+   <td style="text-align:right;"> 359 </td>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:left;"> 2020-06-10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Montgomery </td>
+   <td style="text-align:left;"> 2020-06-07 </td>
+   <td style="text-align:right;"> 1064 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:left;"> 2020-06-10 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Hardin </td>
+   <td style="text-align:left;"> 2020-05-23 </td>
+   <td style="text-align:right;"> 136 </td>
+   <td style="text-align:right;"> 11 </td>
+   <td style="text-align:left;"> 2020-06-10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Potter </td>
+   <td style="text-align:left;"> 2020-05-21 </td>
+   <td style="text-align:right;"> 2196 </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:left;"> 2020-06-10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bowie </td>
+   <td style="text-align:left;"> 2020-06-05 </td>
+   <td style="text-align:right;"> 301 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:left;"> 2020-06-10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Randall </td>
+   <td style="text-align:left;"> 2020-05-17 </td>
+   <td style="text-align:right;"> 602 </td>
+   <td style="text-align:right;"> 9 </td>
+   <td style="text-align:left;"> 2020-06-10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bell </td>
+   <td style="text-align:left;"> 2020-05-15 </td>
+   <td style="text-align:right;"> 242 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:left;"> 2020-06-10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Taylor </td>
+   <td style="text-align:left;"> 2020-05-02 </td>
+   <td style="text-align:right;"> 327 </td>
+   <td style="text-align:right;"> 8 </td>
+   <td style="text-align:left;"> 2020-06-10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Harris </td>
    <td style="text-align:left;"> 2020-06-02 </td>
+   <td style="text-align:right;"> 12664 </td>
+   <td style="text-align:right;"> 388 </td>
+   <td style="text-align:left;"> 2020-06-10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Hays </td>
+   <td style="text-align:left;"> 2020-06-07 </td>
+   <td style="text-align:right;"> 385 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 2020-06-10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Hardin </td>
+   <td style="text-align:left;"> 2020-05-30 </td>
    <td style="text-align:right;"> 138 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:left;"> 2020-06-10 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Panola </td>
-   <td style="text-align:left;"> 2020-06-03 </td>
-   <td style="text-align:right;"> 181 </td>
+   <td style="text-align:left;"> Coryell </td>
+   <td style="text-align:left;"> 2020-05-15 </td>
+   <td style="text-align:right;"> 221 </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> 2020-06-10 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Dallas </td>
-   <td style="text-align:left;"> 2020-05-24 </td>
-   <td style="text-align:right;"> 8649 </td>
-   <td style="text-align:right;"> 172 </td>
-   <td style="text-align:left;"> 2020-06-10 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Harris </td>
-   <td style="text-align:left;"> 2020-06-03 </td>
-   <td style="text-align:right;"> 13027 </td>
-   <td style="text-align:right;"> 363 </td>
-   <td style="text-align:left;"> 2020-06-10 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Ellis </td>
-   <td style="text-align:left;"> 2020-06-08 </td>
-   <td style="text-align:right;"> 364 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:left;"> 2020-06-10 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Midland </td>
-   <td style="text-align:left;"> 2020-05-10 </td>
-   <td style="text-align:right;"> 101 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:left;"> 2020-06-10 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Smith </td>
-   <td style="text-align:left;"> 2020-06-08 </td>
-   <td style="text-align:right;"> 223 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:left;"> 2020-06-10 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Victoria </td>
-   <td style="text-align:left;"> 2020-05-14 </td>
-   <td style="text-align:right;"> 154 </td>
-   <td style="text-align:right;"> 4 </td>
-   <td style="text-align:left;"> 2020-06-10 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Cameron </td>
-   <td style="text-align:left;"> 2020-05-06 </td>
-   <td style="text-align:right;"> 454 </td>
-   <td style="text-align:right;"> 11 </td>
-   <td style="text-align:left;"> 2020-06-10 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Lubbock </td>
-   <td style="text-align:left;"> 2020-05-22 </td>
-   <td style="text-align:right;"> 650 </td>
-   <td style="text-align:right;"> 11 </td>
-   <td style="text-align:left;"> 2020-06-10 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Jefferson </td>
-   <td style="text-align:left;"> 2020-05-25 </td>
-   <td style="text-align:right;"> 498 </td>
-   <td style="text-align:right;"> 6 </td>
-   <td style="text-align:left;"> 2020-06-10 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Hays </td>
-   <td style="text-align:left;"> 2020-06-03 </td>
-   <td style="text-align:right;"> 371 </td>
-   <td style="text-align:right;"> 18 </td>
-   <td style="text-align:left;"> 2020-06-10 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Moore </td>
-   <td style="text-align:left;"> 2020-05-18 </td>
-   <td style="text-align:right;"> 567 </td>
-   <td style="text-align:right;"> 15 </td>
-   <td style="text-align:left;"> 2020-06-10 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Walker </td>
-   <td style="text-align:left;"> 2020-05-02 </td>
-   <td style="text-align:right;"> 269 </td>
-   <td style="text-align:right;"> 0 </td>
    <td style="text-align:left;"> 2020-06-10 </td>
   </tr>
 </tbody>
 </table>
 
-----
 ## Reporting Data
 
 Find when new cases peaked for each county, take top 10.
@@ -255,7 +244,6 @@ dat %>% group_by(County) %>%
 </tbody>
 </table>
 
-----
 ## Plotting Data
 
 
