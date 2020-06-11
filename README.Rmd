@@ -2,7 +2,9 @@
 title: "TexasCovid README"
 author: "Nikolai Priser"
 date: "6/10/2020"
-output: html_document
+output: 
+  html_document: 
+    keep_md: true
 ---
 
 ```{r setup, include=FALSE}
@@ -35,7 +37,6 @@ All data-tables have the following fields:
 DSHS updates data everyday around ~9:30am CST, tidy-data is then updated at 10:30am CST. 
 &nbsp;
 
-----
 ## Getting Data
 
 Read data from github link.
@@ -52,7 +53,6 @@ dat %>%
 
 ```
 
-----
 ## Reporting Data
 
 Find when new cases peaked for each county, take top 10.
@@ -66,7 +66,6 @@ dat %>% group_by(County) %>%
 
 ```
 
-----
 ## Plotting Data
 
 ```{r, echo=TRUE, fig.fullwidth = TRUE}
