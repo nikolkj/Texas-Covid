@@ -8,6 +8,7 @@ Tidy data can be accessed here:
 * Daily Cases: <https://raw.githubusercontent.com/nikolkj/Texas-Covid/master/daily-county-data/Texas-County-Cases.csv>
 * Daily Fatalities: <https://raw.githubusercontent.com/nikolkj/Texas-Covid/master/daily-county-data/Texas-County-Deaths.csv>
 * Daily Tests: <https://raw.githubusercontent.com/nikolkj/Texas-Covid/master/daily-county-data/Texas-County-Tests.csv>
+* Combined Daily File: <https://raw.githubusercontent.com/nikolkj/Texas-Covid/master/daily-county-data/Texas-County-Main.csv>
 
 Data has been cleaned at put in a *long* format for easy visualization and modeling.
 
