@@ -131,10 +131,36 @@ dat = dat %>%
 dat_tests = dat 
 rm(dat)
 
+# Combine datat-sets into "dat_main" ----
+# Joins 
+# ... joins all dat_* items, needs to be updated if additional DSHS data-sources added
+dat_main = dat_cases %>% 
+  rename(DailyCount_cases = DailyCount, DailyDelta_cases = DailyDelta) %>%
+  left_join(x = ., 
+            y = (dat_tests %>%
+                   rename(DailyCount_tests = DailyCount,
+                          DailyDelta_tests = DailyDelta)), 
+            by = c("County", "Date")) %>%
+  left_join(x = ., 
+            y = (dat_fatality %>%
+                   rename(DailyCount_deaths = DailyCount,
+                          DailyDelta_deaths = DailyDelta)), 
+            by = c("County", "Date"))
+  
+# Normalize County Names
+# ... Only applied to "dat_main" since it's used with other personal projects
+# ... and needs to conform to uniform standards.
+# ... 
+# ... All other dat_* objects retain source formatting. 
+dat_main = dat_main %>%
+  mutate(County = stringr::str_to_title(County, locale = "en")) 
+
 # Finishing Touches ----
+# Add timestap ... 
 dat_cases$LastUpdateDate = Sys.Date()
 dat_fatality$LastUpdateDate = Sys.Date()
 dat_tests$LastUpdateDate = Sys.Date()
+dat_main$LastUpdateDate = Sys.Date()
 
 # Data Quality Checks -----
 # ... tbd, compare against last successful export
@@ -153,6 +179,9 @@ write_csv(x = dat_fatality,
 
 write_csv(x = dat_tests,
           path = "/home/niko/Documents/R-projects/TexasCovid/daily-county-data/Texas-County-Tests.csv", na = "", col_names = TRUE)
+
+write_csv(x = dat_main,
+          path = "/home/niko/Documents/R-projects/TexasCovid/daily-county-data/Texas-County-Main.csv", na = "", col_names = TRUE)
 
 # Write Data to Database ----
 # ... tbd
