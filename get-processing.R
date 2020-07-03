@@ -39,9 +39,9 @@ dat = dat[, c(1:min(grep("^\\.+\\d+", names(dat)))-1)]  %>% # drop non-data colu
   select(-Population)
 
 # Wide-to-long 
-dat = dat %>% 
+dat =  dat %>% 
   pivot_longer(data = ., cols = -`County Name`, names_to = "Date", values_to = "DailyCount") %>% 
-  mutate(Date = paste0(str_extract(string = Date, "\\d+-\\d+$"), "-2019"),
+  mutate(Date = paste0(str_extract(string = Date, "\\d{2,2}-\\d{2,2}"), "-2020"),
          Date = as.Date(Date, format = "%m-%d-%y")) %>% 
   rename(County = `County Name`)
 
@@ -76,7 +76,7 @@ dat = dat[, c(1:min(grep("^\\.+\\d+", names(dat)))-1)]  %>% # drop non-data colu
 # Wide-to-long 
 dat = dat %>% 
   pivot_longer(data = ., cols = -`County Name`, names_to = "Date", values_to = "DailyCount") %>% 
-  mutate(Date = paste0(str_extract(string = Date, "\\d+/\\d+$"), "/2019"),
+  mutate(Date = paste0(str_extract(string = Date, "\\d+/\\d+$"), "/2020"),
          Date = as.Date(Date, format = "%m/%d/%y")) %>% 
   rename(County = `County Name`)
 
@@ -116,7 +116,7 @@ dat.class = setdiff(which(sapply(dat, class) != "numeric"), 1) # exception-handl
 dat = dat %>% 
   pivot_longer(data = ., cols = -County, names_to = "Date", values_to = "DailyCount") %>% 
   mutate(Date = str_squish(str_replace(Date, "Tests Through", "")), 
-         Date = paste0(Date, " 2019"),
+         Date = paste0(Date, " 2020"),
          Date = as.Date(Date, format = "%B %d %y"))
 
 dat = dat %>% 
