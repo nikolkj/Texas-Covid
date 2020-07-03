@@ -171,6 +171,7 @@ dat_main$LastUpdateDate = Sys.Date()
 # ... Just write to local here
 # ... Commit and push of daily-copies handled by git in primary shell script
 
+# Write Files to project directories
 write_csv(x = dat_cases, 
           path = "/home/niko/Documents/R-projects/TexasCovid/daily-county-data/Texas-County-Cases.csv", na = "", col_names = TRUE)
 
@@ -182,6 +183,10 @@ write_csv(x = dat_tests,
 
 write_csv(x = dat_main,
           path = "/home/niko/Documents/R-projects/TexasCovid/daily-county-data/Texas-County-Main.csv", na = "", col_names = TRUE)
+
+# Write Files to related project directories
+write_csv(x = dat_main,
+          path = "/home/niko/Documents/R-projects/TexasCovid-modeling/shiny-server_files/Texas-County-Main.csv", na = "", col_names = TRUE)
 
 # Write Data to Database ----
 # ... tbd
