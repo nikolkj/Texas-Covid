@@ -127,8 +127,79 @@ dat = dat %>%
   ungroup() %>% 
   select(-DailyCountLag)
 
-# Create output copy of daily fatality counts
+# Create output copy of daily tests counts
 dat_tests = dat 
+rm(dat)
+
+# Processing (DailyTSAHospitalCapacity) ----
+dat_target = files_downloads %>% 
+  filter(str_detect(FileName, "DailyTSAHospitalCapacity")) %>% 
+  filter(ctime == max(ctime)) %>% 
+  select(FilePath) %>% unlist()
+
+# Read Data file
+dat = readxl::read_xlsx(path = dat_target, range = "A3:ZZ1000",sheet =  1, col_names = TRUE)
+
+# Remove non-data observations
+dat = slice_head(.data = dat, n = (which(dat$`TSA ID` == "Total")[1]) - 1) # drop non-data rows
+dat = dat[, c(1:min(grep("^\\.+\\d+", names(dat)))-1)] # drop non-data columns
+
+# Convert to <numeric>
+dat[,c(3:ncol(dat))] = dat[,c(3:ncol(dat))] %>% sapply(X = ., as.numeric)
+
+# Wide-to-long 
+dat = dat %>% 
+  pivot_longer(data = ., cols =  -c(`TSA ID`, `TSA AREA`), names_to = "Date", values_to = "DailyCount") %>% 
+  mutate(Date = as.Date(Date)) %>%
+  rename(TSA_ID = `TSA ID`, TSA_Name = `TSA AREA`) %>% 
+  mutate(TSA_ID = str_remove(string = TSA_ID, "[^[A-z]]") %>% str_trim())
+
+dat = dat %>% 
+  arrange(TSA_ID, Date) %>% 
+  group_by(TSA_ID) %>% 
+  mutate(DailyCountLag = dplyr::lag(DailyCount),
+         DailyDelta = DailyCount - DailyCountLag) %>% 
+  ungroup() %>% 
+  select(-DailyCountLag)
+
+# Create output copy of daily tests counts
+dat_capacity = dat 
+rm(dat)
+
+
+# Processing (DailyTSAHospitalizations) ----
+dat_target = files_downloads %>% 
+  filter(str_detect(FileName, "DailyTSAHospitalizations")) %>% 
+  filter(ctime == max(ctime)) %>% 
+  select(FilePath) %>% unlist()
+
+# Read Data file
+dat = readxl::read_xlsx(path = dat_target, range = "A3:ZZ1000",sheet =  1, col_names = TRUE)
+
+# Remove non-data observations
+dat = slice_head(.data = dat, n = (which(dat$`TSA ID` == "Total")[1]) - 1) # drop non-data rows
+dat = dat[, c(1:min(grep("^\\.+\\d+", names(dat)))-1)] # drop non-data columns
+
+# Convert to <numeric>
+dat[,c(3:ncol(dat))] = dat[,c(3:ncol(dat))] %>% sapply(X = ., as.numeric)
+
+# Wide-to-long 
+dat = dat %>% 
+  pivot_longer(data = ., cols =  -c(`TSA ID`, `TSA AREA`), names_to = "Date", values_to = "DailyCount") %>% 
+  mutate(Date = as.Date(Date)) %>%
+  rename(TSA_ID = `TSA ID`, TSA_Name = `TSA AREA`) %>% 
+  mutate(TSA_ID = str_remove(string = TSA_ID, "[^[A-z]]") %>% str_trim())
+
+dat = dat %>% 
+  arrange(TSA_ID, Date) %>% 
+  group_by(TSA_ID) %>% 
+  mutate(DailyCountLag = dplyr::lag(DailyCount),
+         DailyDelta = DailyCount - DailyCountLag) %>% 
+  ungroup() %>% 
+  select(-DailyCountLag)
+
+# Create output copy of daily tests counts
+dat_hospitalization = dat 
 rm(dat)
 
 # Combine datat-sets into "dat_main" ----
@@ -146,14 +217,26 @@ dat_main = dat_cases %>%
                    rename(DailyCount_deaths = DailyCount,
                           DailyDelta_deaths = DailyDelta)), 
             by = c("County", "Date"))
+
+dat_TSA = dat_hospitalization %>%
+  rename(DailyCount_patients  = DailyCount,
+         DailyDelta_patients  = DailyDelta) %>% 
+    left_join(x = .,
+            y = (dat_capacity %>% select(-TSA_Name) %>%
+                   rename(DailyCount_beds  = DailyCount,
+                          DailyDelta_beds  = DailyDelta)),
+            by = c("TSA_ID", "Date"))
   
 # Normalize County Names
-# ... Only applied to "dat_main" since it's used with other personal projects
+# ... Only applied to "dat_main" & "dat_TSA" since it's used with other personal projects
 # ... and needs to conform to uniform standards.
 # ... 
 # ... All other dat_* objects retain source formatting. 
 dat_main = dat_main %>%
   mutate(County = stringr::str_to_title(County, locale = "en")) 
+
+dat_TSA = dat_TSA %>% 
+  mutate(TSA_Name = stringr::str_to_title(TSA_Name, locale = "en"))
 
 # Finishing Touches ----
 # Add timestap ... 
@@ -161,6 +244,10 @@ dat_cases$LastUpdateDate = Sys.Date()
 dat_fatality$LastUpdateDate = Sys.Date()
 dat_tests$LastUpdateDate = Sys.Date()
 dat_main$LastUpdateDate = Sys.Date()
+
+dat_capacity$LastUpdateDate = Sys.Date()
+dat_hospitalization$LastUpdateDate = Sys.Date()
+dat_TSA$LastUpdateDate = Sys.Date()
 
 # Data Quality Checks -----
 # ... tbd, compare against last successful export
@@ -184,9 +271,22 @@ write_csv(x = dat_tests,
 write_csv(x = dat_main,
           path = "/home/niko/Documents/R-projects/TexasCovid/daily-county-data/Texas-County-Main.csv", na = "", col_names = TRUE)
 
+write_csv(x = dat_hospitalization,
+          path = "/home/niko/Documents/R-projects/TexasCovid/daily-county-data/Texas-County-Hospitalizations.csv", na = "", col_names = TRUE)
+
+write_csv(x = dat_capacity,
+          path = "/home/niko/Documents/R-projects/TexasCovid/daily-county-data/Texas-County-HospitalCapacity.csv", na = "", col_names = TRUE)
+
+write_csv(x = dat_TSA,
+          path = "/home/niko/Documents/R-projects/TexasCovid/daily-county-data/Texas-County-TSA.csv", na = "", col_names = TRUE)
+
+
 # Write Files to related project directories
 write_csv(x = dat_main,
           path = "/home/niko/Documents/R-projects/TexasCovid-modeling/shiny-server_files/Texas-County-Main.csv", na = "", col_names = TRUE)
+
+write_csv(x = dat_TSA,
+          path = "/home/niko/Documents/R-projects/TexasCovid-modeling/shiny-server_files/Texas-County-TSA.csv", na = "", col_names = TRUE)
 
 # Write Data to Database ----
 # ... tbd
