@@ -74,10 +74,10 @@ dat = dat[, c(1:min(grep("^\\.+\\d+", names(dat)))-1)]  %>% # drop non-data colu
   select(-Population)
 
 # Wide-to-long 
-dat = dat %>% 
-  pivot_longer(data = ., cols = -`County Name`, names_to = "Date", values_to = "DailyCount") %>% 
-  mutate(Date = paste0(str_extract(string = Date, "\\d+/\\d+$"), "/2020"),
-         Date = as.Date(Date, format = "%m/%d/%y")) %>% 
+dat =  dat %>% 
+  pivot_longer(data = ., cols = -`County Name`, names_to = "Date", values_to = "DailyCount") %>%
+  mutate(Date = as.numeric(Date) - 2, # manual adjustment of (-2) based on observed data. Not sure why things don't align with standard origin 
+         Date = as.Date(Date, origin = "1900-01-01")) %>%
   rename(County = `County Name`)
 
 dat = dat %>% 
