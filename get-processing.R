@@ -66,7 +66,9 @@ dat_target = files_downloads %>%
   select(FilePath) %>% unlist()
 
 # Read Data file
-dat = readxl::read_xlsx(path = dat_target, range = "A3:ZZ1000",sheet =  1, col_names = TRUE)
+dat = readxl::read_xlsx(path = dat_target, range = "A3:ZZ1000",sheet =  1, col_names = TRUE, 
+                        col_types = "text" # import as text, compensate for date-header import format issues 
+                        )
 
 # Remove non-data observations
 dat = slice_head(.data = dat, n = (which(dat$`County Name` == "Total")[1]) - 1) # drop non-data rows
@@ -76,10 +78,25 @@ dat = dat[, c(1:min(grep("^\\.+\\d+", names(dat)))-1)]  %>% # drop non-data colu
 # Wide-to-long 
 dat =  dat %>% 
   pivot_longer(data = ., cols = -`County Name`, names_to = "Date", values_to = "DailyCount") %>%
-  mutate(Date = as.numeric(Date) - 2, # manual adjustment of (-2) based on observed data. Not sure why things don't align with standard origin 
-         Date = as.Date(Date, origin = "1900-01-01")) %>%
-  rename(County = `County Name`)
+  mutate(date_import_style = str_detect(Date, "/")) %>% # bifurcate data by different [Date] formats
+  group_by(date_import_style) %>% nest()
 
+# Fix Date-values
+dat$data[[which(dat$date_import_style)]] = dat$data[[which(dat$date_import_style)]] %>% 
+  mutate(Date = as.Date(Date, format = "%m/%d/%Y"))
+
+dat$data[[which(!dat$date_import_style)]] = dat$data[[which(!dat$date_import_style)]] %>% 
+  mutate(Date = as.numeric(Date) - 2, # manual adjustment of (-2) based on observed data. Not sure why things don't align with standard origin 
+         Date = as.Date(Date, origin = "1900-01-01")) 
+
+dat = dat %>% 
+  unnest(cols = c("data")) %>% ungroup() %>%  
+  rename(County = `County Name`) %>%
+  arrange(County, Date) %>% 
+  select(-date_import_style) %>% 
+  mutate(DailyCount = as.numeric(DailyCount))
+
+# Aggregegate, calcululate [DailyDelta]
 dat = dat %>% 
   arrange(County, Date) %>% 
   group_by(County) %>% 
