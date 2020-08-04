@@ -104,7 +104,16 @@ dat = dat %>%
   mutate(DailyCountLag = dplyr::lag(DailyCount),
          DailyDelta = DailyCount - DailyCountLag) %>% 
   ungroup() %>% 
-  select(-DailyCountLag)
+  select(-DailyCountLag) %>%
+  mutate(County = stringr::str_to_title(County)) %>% # match to all other data-files
+  filter(toupper(County) != "UNKNOWN")
+
+# Manual [County] fixes to match other files
+dat$County[which(dat$County == "De Witt")] = "DeWitt"
+dat$County[which(dat$County == "Mcculloch")] = "McCulloch"
+dat$County[which(dat$County == "Mclennan")] = "McLennan"
+
+
 
 # Create output copy of daily fatality counts
 dat_fatality = dat 
