@@ -35,8 +35,9 @@ dat = readxl::read_xlsx(path = dat_target, range = "A3:ZZ1000",sheet =  1, col_n
 
 # Remove non-data observations
 dat = slice_head(.data = dat, n = (which(dat$`County Name` == "Total")[1]) - 1) # drop non-data rows
-dat = dat[, c(1:min(grep("^\\.+\\d+", names(dat)))-1)]  %>% # drop non-data columns
-  select(-Population)
+dat = dat[, c(1:min(grep("^\\.+\\d+", names(dat)))-1)] # drop non-data columns
+names(dat) = names(dat) %>% gsub("\\r", " ", .) %>% gsub("\\n"," ",x = .) %>% str_squish()
+
 
 # Wide-to-long 
 dat =  dat %>% 
@@ -71,9 +72,9 @@ dat = readxl::read_xlsx(path = dat_target, range = "A3:ZZ1000",sheet =  1, col_n
                         )
 
 # Remove non-data observations
-dat = slice_head(.data = dat, n = (which(dat$`County Name` == "Total")[1]) - 1) # drop non-data rows
-dat = dat[, c(1:min(grep("^\\.+\\d+", names(dat)))-1)]  %>% # drop non-data columns
-  select(-Population)
+dat = slice_head(.data = dat, n = (which(dat$`County Name` == "Grand Total")[1]) - 1) # drop non-data rows
+dat = dat[, c(1:min(grep("^\\.+\\d+", names(dat)))-1)]  # drop non-data columns
+
 
 # Wide-to-long 
 dat =  dat %>% 
