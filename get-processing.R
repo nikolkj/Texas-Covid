@@ -72,7 +72,7 @@ dat = readxl::read_xlsx(path = dat_target, range = "A3:ZZ1000",sheet =  1, col_n
                         )
 
 # Remove non-data observations
-dat = slice_head(.data = dat, n = (which(dat$`County Name` == "Grand Total")[1]) - 1) # drop non-data rows
+dat = slice_head(.data = dat, n = (which(dat$`County Name` == "Grand Total" | dat$`County Name` == "Total")[1]) - 1) # drop non-data rows
 dat = dat[, c(1:min(grep("^\\.+\\d+", names(dat)))-1)]  # drop non-data columns
 
 
@@ -83,12 +83,16 @@ dat =  dat %>%
   group_by(date_import_style) %>% nest()
 
 # Fix Date-values
+if(TRUE %in% dat$date_import_style){
 dat$data[[which(dat$date_import_style)]] = dat$data[[which(dat$date_import_style)]] %>% 
   mutate(Date = as.Date(Date, format = "%m/%d/%Y"))
+}
 
+if(FALSE %in% dat$date_import_style){
 dat$data[[which(!dat$date_import_style)]] = dat$data[[which(!dat$date_import_style)]] %>% 
   mutate(Date = as.numeric(Date) - 2, # manual adjustment of (-2) based on observed data. Not sure why things don't align with standard origin 
          Date = as.Date(Date, origin = "1900-01-01")) 
+}
 
 dat = dat %>% 
   unnest(cols = c("data")) %>% ungroup() %>%  
@@ -266,7 +270,6 @@ dat_TSA = dat_TSA %>%
   mutate(TSA_Name = stringr::str_to_title(TSA_Name, locale = "en"))
 
 # Finishing Touches ----
-# Add timestap ... 
 dat_cases$LastUpdateDate = Sys.Date()
 dat_fatality$LastUpdateDate = Sys.Date()
 dat_tests$LastUpdateDate = Sys.Date()
