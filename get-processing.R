@@ -90,8 +90,10 @@ dat$data[[which(dat$date_import_style)]] = dat$data[[which(dat$date_import_style
 
 if(FALSE %in% dat$date_import_style){
 dat$data[[which(!dat$date_import_style)]] = dat$data[[which(!dat$date_import_style)]] %>% 
-  mutate(Date = as.numeric(Date) - 2, # manual adjustment of (-2) based on observed data. Not sure why things don't align with standard origin 
-         Date = as.Date(Date, origin = "1900-01-01")) 
+  mutate(Date = str_replace(Date, "([A-z]|\\s+)+", "")) %>% # Remove any leading text
+  # mutate(Date = as.numeric(Date) - 2, # manual adjustment of (-2) based on observed data. Not sure why things don't align with standard origin
+  #        Date = as.Date(Date, origin = "1900-01-01")) %>% 
+  mutate(Date = as.Date(Date, origin = "1900-01-01", format = "%m-%d"))
 }
 
 dat = dat %>% 
